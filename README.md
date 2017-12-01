@@ -16,6 +16,9 @@
   - Find the directory where you extracted it. (type `cd ~/Downloads/Playcord-master` for macOS and Linux and `cd %homepath%\Downloads\Playcord-master` if you extracted it with the default name to your downloads folder)
   - Type `npm install`
   - Once that completes setup is done. Type `node app.js` whenever you want to use it.
+  
+### Video Tutorals
+  - [Tutorial by Sam Menzies](https://youtu.be/Rntn6Jg8cHk?t=210)
 
 
 
