@@ -6,12 +6,11 @@
   - NodeJS >=8
   - npm (>=5) or Yarn (>=1.2)
   - Discord Canary (preferred)
-  - Google Play Music Desktop Player
+  - Google Play Music Desktop Player
 
 
 ## Setup
-
-  - coming soon
+  - coming soon
 
 
 
