@@ -1,4 +1,4 @@
-# spoticord `0.0.1`
+# playcord `0.0.1`
 **Display your current GPMDP song on Discord using the RPC API:**
 ![N|Solid](https://s.phineas.io/share/DiscordProfile-RR_50.png)
 
