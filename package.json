@@ -1,7 +1,7 @@
 {
-  "name": "spoticord",
-  "version": "0.0.3",
-  "description": "Display your Spotify status as a Discord Rich Presence using the RPC API",
+  "name": "playcord",
+  "version": "0.0.1",
+  "description": "Display your Google Play Music Desktop Player status as a Discord Rich Presence using the RPC API",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,16 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/nations/spoticord.git"
   },
-  "author": "Phineas",
-  "license": "ISC",
+  "author": "theLMGN (originally by Phineas @ gh/Nations)",
+  "license": "GPL",
   "bugs": {
-    "url": "https://github.com/nations/spoticord/issues"
+    "url": "https://github.com/thelmgn/playcord/bugs"
   },
-  "homepage": "https://github.com/nations/spoticord#readme",
+  "homepage": "https://github.com/thelmgn/playcord",
   "dependencies": {
     "discord-rpc": "^3.0.0-beta.4",
     "fancy-log": "^1.3.0",
-    "request": "^2.83.0",
     "wintools": "^0.1.0"
   }
 }
