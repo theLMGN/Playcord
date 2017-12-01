@@ -10,7 +10,12 @@
 
 
 ## Setup
-  - coming soon
+  - Download Node.JS from https://nodejs.org/en/ (both versions *should* work)
+  - [Download the repo and unzip](https://github.com/theLMGN/Playcord/archive/master.zip)
+  - Open CMD/Terminal
+  - Find the directory where you extracted it. (type `cd ~/Downloads/Playcord-master` for macOS and Linux and `cd %homepath%\Downloads\Playcord-master` if you extracted it with the default name to your downloads folder)
+  - Type `npm install`
+  - Once that completes setup is done. Type `node app.js` whenever you want to use it.
 
 
 
