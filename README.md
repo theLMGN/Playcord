@@ -1,23 +1,18 @@
-# spoticord `0.0.3` [![discordxd](https://discordapp.com/api/guilds/297142682894073856/embed.png)](https://discord.gg/nations)
-**Display your current Spotify song on Discord using the RPC API:**
+# spoticord `0.0.1`
+**Display your current GPMDP song on Discord using the RPC API:**
 ![N|Solid](https://s.phineas.io/share/DiscordProfile-RR_50.png)
 
 ## Dependencies
   - NodeJS >=8
   - npm (>=5) or Yarn (>=1.2)
   - Discord Canary (preferred)
-  - Spotify >= 1.0
+  - Google Play Music Desktop Player
+
 
 ## Setup
 
-  - Clone the repo `git clone https://github.com/nations/spoticord.git`
-  - Install the modules `npm i` or `yarn`
-  - Open Discord & Spotify
-  - Start the RPC app `node app.js`
+  - coming soon
 
-## Updating
-
-  - To update SpotiCord, enter the "spoticord" directory and run `git fetch` in your terminal.
 
 
 ## Useful links
@@ -43,6 +38,6 @@
 
 ### How to run in the background
   - Install pm2 `npm i pm2 -g`
-  - Start the app `pm2 start app.js --name="spoticord"`
-  - Use `pm2 log spoticord` to view the logs
-  - Restart the app using `pm2 restart spoticord`
+  - Start the app `pm2 start app.js --name="playcord"`
+  - Use `pm2 log playcord` to view the logs
+  - Restart the app using `pm2 restart playcord`
