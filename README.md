@@ -4,7 +4,7 @@
 
 ## Dependencies
   - NodeJS >=8
-  - npm (>=5) or Yarn (>=1.2)
+  - npm (>=5)
   - Discord Canary (preferred)
   - Google Play Music Desktop Player
 
