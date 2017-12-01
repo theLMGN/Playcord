@@ -1,88 +1,82 @@
 const DiscordRPC = require('discord-rpc'),
-      spotifyWeb = require('./spotify'),
       log = require("fancy-log"),
-      events = require('events'),
-      fs = require('fs');
+      fs = require('fs'),
+      os = require("os");
 
 const keys = require('./keys.json');
 
 const rpc = new DiscordRPC.Client({ transport: keys.rpcTransportType }),
-      s = new spotifyWeb.SpotifyWebHelper(),
       appClient = keys.appClientID,
       largeImageKey = keys.imageKeys.large,
       smallImageKey = keys.imageKeys.small,
       smallImagePausedKey = keys.imageKeys.smallPaused;
 
-var songEmitter = new events.EventEmitter(),
-    currentSong = {};
 
-async function checkSpotify() {
-  s.getStatus(function(err, res) {
-    if(err) {
-      log.error("Failed to fetch Spotify data:", err);
-      return;
+async function readJSON() {
+    if (os.platform == "darwin") {
+      var obj = JSON.parse(require('fs').readFileSync(os.homedir() + '/Library/Application Support/Google Play Music Desktop Player/json_store/playback.json', 'utf8'));
+    } else if (os.platform == "linux") {
+      var obj = JSON.parse(require('fs').readFileSync(os.homedir() + '/.config/Google Play Music Desktop Player/json_store/playback.json', 'utf8'));
+    } else if (os.platform == "win32") {
+      var obj = JSON.parse(require('fs').readFileSync(os.homedir() + '\\AppData\\Roaming\\Google Play Music Desktop Player\\json_store\\playback.json', 'utf8'));
     }
-
-    if(!res.track.track_resource || !res.track.artist_resource) return;
-
-    if(currentSong.uri && res.track.track_resource.uri == currentSong.uri && (res.playing != currentSong.playing)) {
-      currentSong.playing = res.playing;
-      songEmitter.emit('songUpdate', currentSong);
-      return;
+    log.info("Playing: " + obj.song.title)
+    if (obj.playing == false) {
+      if (obj.song.title == null) {
+        if (keys.transmitwhenidle == true) {
+          rpc.setActivity({
+            details: `User has not picked a song,`,
+            state: ` or the app isn't open.`,
+            largeImageKey,
+            smallImagePausedKey,
+            largeImageText: `Playcord by theLMGN`,
+            smallImageText: `Nothing is playing.`,
+            instance: false,
+          });
+        }
+      } else {
+        rpc.setActivity({
+          details: `Paused: ${obj.song.title}`,
+          state: `by  ${obj.song.artist}`,
+          largeImageKey,
+          smallImagePausedKey,
+          largeImageText: `Playcord by theLMGN`,
+          smallImageText: `💿  ${obj.song.album}`,
+          instance: false,
+        });
+      }
+      
+    } else {
+      rpc.setActivity({
+        details: `Playing ${obj.song.title}`,
+        state: `by  ${obj.song.artist}`,
+        startTimestamp: Math.floor((new Date() - obj.time.current) / 1000),
+        endTimestamp: Math.floor(((new Date() - obj.time.current) + obj.time.total) / 1000),
+        largeImageKey,
+        smallImageKey,
+        largeImageText: `Playcord by theLMGN`,
+        smallImageText: `💿  ${obj.song.album}`,
+        instance: true,
+      });
     }
-
-    if(res.track.track_resource.uri == currentSong.uri) return;
-
-    let start = parseInt(new Date().getTime().toString().substr(0, 10)),
-        end = start + (res.track.length - res.playing_position);
-    var song = {uri: res.track.track_resource.uri, name: res.track.track_resource.name, album: res.track.album_resource.name, artist: res.track.artist_resource.name, start, end, playing: res.playing};
-    currentSong = song;
-
-    songEmitter.emit('newSong', song);
-  });
+    
 }
-
-songEmitter.on('newSong', song => {
-  rpc.setActivity({
-    details: `🎵  ${song.name}`,
-    state: `👤  ${song.artist}`,
-	  startTimestamp: song.start,
-		endTimestamp: song.end,
-		largeImageKey,
-    smallImageKey,
-    largeImageText: `⛓  ${song.uri}`,
-    smallImageText: `💿  ${song.album}`,
-		instance: false,
-  });
-
-  log.info(`Updated song to: ${song.artist} - ${song.name}`);
-});
-
-songEmitter.on('songUpdate', song => {
-  const startTimestamp = song.playing ? song.start : undefined,
-        endTimestamp = song.playing ? song.end : undefined;
-
-  rpc.setActivity({
-    details: `🎵  ${song.name}`,
-    state: `👤  ${song.artist}`,
-    startTimestamp,
-    endTimestamp,
-    largeImageKey,
-    smallImageKey: startTimestamp ? smallImageKey : smallImagePausedKey,
-    largeImageText: `⛓  ${song.uri}`,
-    smallImageText: `💿  ${song.album}`,
-		instance: false,
-  });
-
-  log(`Song state updated (playing: ${song.playing})`)
-});
 
 rpc.on('ready', () => {
   log(`Connected to Discord! (${appClient})`);
 
   setInterval(() => {
-    checkSpotify();
+    try {
+      readJSON()
+  } catch (e) {
+      log.error(e);
+  }
   }, 1500);
 });
 
-rpc.login(appClient).catch(log.error);
+if (os.platform() === "win32" || os.platform() === "darwin" || os.platform() === "linux") {
+  rpc.login(appClient).catch(log.error);
+} else {
+  log.error(`We don't support ${os.platform()} just yet.`)
+}
+
